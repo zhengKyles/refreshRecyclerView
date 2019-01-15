@@ -1,0 +1,43 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion 28
+
+        versionCode 1
+        versionName "1.0.0"
+    }
+    dataBinding {
+        enabled true
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+    publish {
+        userOrg = 'kyle'      //bintray注册的用户名
+        groupId = 'com.kyle'         //compile引用时的第1部分groupId
+        artifactId = 'refreshRecyclerView'     //compile引用时的第2部分项目名
+        publishVersion = '1.0.0'    //compile引用时的第3部分版本号
+        desc = 'This is a refreshRecyclerView library '
+        website = 'https://github.com/zhengKyles/progressSeekBar'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //https://www.jianshu.com/p/b343fcff51b0
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    //下拉刷新上拉加载库https://github.com/scwang90/SmartRefreshLayout
+    implementation "com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1"
+    //加载动画 https://github.com/ybq/Android-SpinKit
+    implementation "com.github.ybq:Android-SpinKit:1.1.0"
+    //一个支持多种状态的自定义View https://github.com/search?q=multiple-status-view
+    implementation 'com.classic.common:multiple-status-view:1.5.1'
+}
+repositories {
+    maven { url "https://jitpack.io" }
+}
