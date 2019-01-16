@@ -20,9 +20,13 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
+        maven{url 'https://dl.bintray.com/kyle/maven'}
+
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+tasks.getByPath(":refreshrecyclerview:javadocRelease").enabled = false
