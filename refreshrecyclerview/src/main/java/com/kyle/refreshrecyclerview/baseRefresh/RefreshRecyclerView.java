@@ -13,10 +13,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.kyle.refreshrecyclerview.R;
 import com.kyle.refreshrecyclerview.databinding.LayoutRefreshRecyclerviewBinding;
 import com.kyle.refreshrecyclerview.BaseAdapter;
-import com.kyle.refreshrecyclerview.interfaces.Pager;
+import com.kyle.refreshrecyclerview.interfaces.PagerReq;
+import com.kyle.refreshrecyclerview.interfaces.PagerResp;
 import com.kyle.refreshrecyclerview.util.NetUtils;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ import static com.kyle.refreshrecyclerview.LRecyclerView.VERTICAL;
  * Created by Kyle on 2018/9/19.
  */
 
-public abstract class RefreshRecyclerView<D, Adapter extends BaseAdapter, P extends Pager<D>> extends RelativeLayout {
+public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req extends PagerReq, Resp extends PagerResp> extends RelativeLayout {
     protected LayoutRefreshRecyclerviewBinding binding;
 
 
@@ -36,7 +35,8 @@ public abstract class RefreshRecyclerView<D, Adapter extends BaseAdapter, P exte
 
     protected Adapter adapter;
 
-    protected P req;
+    protected Req req;
+    protected Resp resp;
 
     public RefreshRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -69,7 +69,8 @@ public abstract class RefreshRecyclerView<D, Adapter extends BaseAdapter, P exte
         addView(view);
 
         binding.refreshLayout.setOnLoadMoreListener(refreshLayout -> {
-            if (req.getPage() >= req.getTotalPages()) {
+            if(resp==null)return;
+            if (req.getPage() >= resp.getTotalPages()) {
                 finishLoadMore();
                 return;
             }
@@ -81,7 +82,7 @@ public abstract class RefreshRecyclerView<D, Adapter extends BaseAdapter, P exte
         });
     }
 
-    protected abstract P getReq();
+    protected abstract Req getReq();
 
     public void reLoad() {
         req.setPage(1);
@@ -114,21 +115,21 @@ public abstract class RefreshRecyclerView<D, Adapter extends BaseAdapter, P exte
         }
     }
 
-    public void onSuccess(P pager) {
+    public void onSuccess(Resp resp) {
+        this.resp=resp;
         onRequestEnd();
         finishLoadMore();
         finishRefresh();
-        req.setTotalPage(pager.getTotalPages());
-        if (req.getPage() == 1) {
-            if(pager.getData().size()==0){
+        if (resp.getPage() == 1) {
+            if (resp.getData().size() == 0) {
                 showEmpty();
                 return;
             }
             showContent();
-            setNewData(pager.getData());
+            setNewData(resp.getData());
         } else {
             showContent();
-            addData(pager.getData());
+            addData(resp.getData());
         }
     }
 
@@ -173,11 +174,11 @@ public abstract class RefreshRecyclerView<D, Adapter extends BaseAdapter, P exte
     }
 
 
-    public void setNewData(List<D> d) {
+    public void setNewData(List d) {
         adapter.setNewData(d);
     }
 
-    public void addData(List<D> d) {
+    public void addData(List d) {
         adapter.addData(d);
     }
 
