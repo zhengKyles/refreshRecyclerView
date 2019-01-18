@@ -26,7 +26,7 @@ import static com.kyle.refreshrecyclerview.LRecyclerView.VERTICAL;
  * Created by Kyle on 2018/9/19.
  */
 
-public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req extends PagerReq, Resp extends PagerResp> extends RelativeLayout {
+public abstract class RefreshRecyclerView<Adapter extends BaseAdapter,Req extends PagerReq> extends RelativeLayout {
     protected LayoutRefreshRecyclerviewBinding binding;
 
 
@@ -36,7 +36,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
     protected Adapter adapter;
 
     protected Req req;
-    protected Resp resp;
+    protected PagerResp resp;
 
     public RefreshRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -115,7 +115,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
         }
     }
 
-    public void onSuccess(Resp resp) {
+    public void onSuccess(PagerResp resp) {
         this.resp=resp;
         onRequestEnd();
         finishLoadMore();
