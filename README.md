@@ -120,5 +120,32 @@ public class GoDoorTimeListView extends RefreshRecyclerView<GoDoorTimeAdapter,Pa
     }
 }
 ```
-
+然后在布局中使用：
+```java
+  <com.lejias.cproject.ui.orderlist.detail.godoortime.GoDoorTimeListView
+            android:id="@+id/list"
+            android:layout_marginTop="10dp"
+            app:direction="vertical"
+            app:divider_height_vertical="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+ ```
+ 
+ 最后在代码中调用请求：
+ 
+ ```java
+ list.loadData();
+```
+可用的参数:
+```java
+<declare-styleable name="RefreshRecyclerView">
+        <attr name="divider_width_horizontal"/> 当recyclerView为水平时的item的水平间距
+        <attr name="divider_height_vertical"/>  当recyclerView为竖直时的item的竖直间距
+        <attr name="direction"/>                recyclerview的方向：vertical竖直  horizontal水平  grid网格
+        <attr name="span_count"/>                recyclerview的方向为grid时的列数
+        <attr name="recycler_divider"/>          recyclerview的分割线样式、一般是颜色
+        <attr name="empty_id"/>                  recyclerview的空布局的view
+        <attr name="lastEnable"/>                recyclerview的最后一个item的分割线是否可见
+    </declare-styleable>
+```
 
