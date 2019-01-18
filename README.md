@@ -9,6 +9,7 @@ refreshRecyclerView
 
 PagerReq：
 
+
 public class PagerReq implements com.kyle.refreshrecyclerview.interfaces.PagerReq {
     private int page=1;
     private int limit=10;
@@ -35,6 +36,7 @@ public class PagerReq implements com.kyle.refreshrecyclerview.interfaces.PagerRe
 }
 
  PagerResp:
+ 
  
 public class PagerResp implements com.kyle.refreshrecyclerview.interfaces.PagerResp<String> {
     private List<String> data;
@@ -69,6 +71,8 @@ public class PagerResp implements com.kyle.refreshrecyclerview.interfaces.PagerR
 }
 
 然后编写一个adapter继承BaseAdapter(本库中的BaseAdapter)如：
+
+
 public class GoDoorTimeAdapter extends BaseAdapter<String,ItemGoDoorDateListBinding> {
     public GoDoorTimeAdapter() {
         super(R.layout.xxx);
