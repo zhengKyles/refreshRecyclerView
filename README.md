@@ -1,6 +1,10 @@
 # refreshRecyclerView
 refreshRecyclerView
 
+
+#目的
+统一上拉加载下拉刷新样式和网络请求出错显示。
+
 #使用
 
     api 'com.kyle:refreshRecyclerView:1.0.6'
