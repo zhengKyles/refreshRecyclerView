@@ -9,7 +9,7 @@ refreshRecyclerView
 
 PagerReq：
 
-
+```java
 public class PagerReq implements com.kyle.refreshrecyclerview.interfaces.PagerReq {
     private int page=1;
     private int limit=10;
@@ -34,10 +34,11 @@ public class PagerReq implements com.kyle.refreshrecyclerview.interfaces.PagerRe
         this.limit = limit;
     }
 }
+```
 
  PagerResp:
  
- 
+ ```java
 public class PagerResp implements com.kyle.refreshrecyclerview.interfaces.PagerResp<String> {
     private List<String> data;
     private int curPage;
@@ -69,10 +70,10 @@ public class PagerResp implements com.kyle.refreshrecyclerview.interfaces.PagerR
         this.totalPages = totalPages;
     }
 }
-
+```
 然后编写一个adapter继承BaseAdapter(本库中的BaseAdapter)如：
 
-
+```java
 public class GoDoorTimeAdapter extends BaseAdapter<String,ItemGoDoorDateListBinding> {
     public GoDoorTimeAdapter() {
         super(R.layout.xxx);
@@ -83,11 +84,12 @@ public class GoDoorTimeAdapter extends BaseAdapter<String,ItemGoDoorDateListBind
        ...
     }
 }
-
+```
 ItemGoDoorDateListBinding是databinding根据布局生产出来的一个类，databinding用法:https://blog.csdn.net/qby_nianjun/article/details/79198166
 
 最后编写一个类继承RefreshRecyclerView，如下:
 
+```java
 public class GoDoorTimeListView extends RefreshRecyclerView<GoDoorTimeAdapter,PagerReq>{
     public GoDoorTimeListView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -112,5 +114,6 @@ public class GoDoorTimeListView extends RefreshRecyclerView<GoDoorTimeAdapter,Pa
    }
     }
 }
+```
 
 
