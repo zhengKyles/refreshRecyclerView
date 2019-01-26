@@ -9,17 +9,16 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-
+import com.kyle.baserecyclerview.BaseAdapter;
 import com.kyle.refreshrecyclerview.R;
 import com.kyle.refreshrecyclerview.databinding.LayoutRefreshRecyclerviewBinding;
-import com.kyle.refreshrecyclerview.BaseAdapter;
 import com.kyle.refreshrecyclerview.interfaces.PagerReq;
 import com.kyle.refreshrecyclerview.interfaces.PagerResp;
 import com.kyle.refreshrecyclerview.util.NetUtils;
 
 import java.util.List;
 
-import static com.kyle.refreshrecyclerview.LRecyclerView.VERTICAL;
+import static com.kyle.baserecyclerview.LRecyclerView.VERTICAL;
 
 
 /**
