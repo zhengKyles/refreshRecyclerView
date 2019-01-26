@@ -8,7 +8,7 @@ refreshRecyclerView
 
 #使用
 
-    api 'com.kyle:refreshRecyclerView:1.0.6'
+    api 'com.kyle:refreshRecyclerView:1.0.7'
     
 编写一个网络请求的请求bean和返回bean分别实现PagerReq和PagerResp，比如：
 
