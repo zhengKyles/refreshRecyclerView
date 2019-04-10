@@ -20,11 +20,6 @@
 
             <com.kyle.baserecyclerview.LRecyclerView
                 android:id="@+id/list"
-                app:direction="vertical"
-                app:divider_height_vertical="10dp"
-                app:divider_width_horizontal="10dp"
-                app:lastEnable="true"
-                app:span_count="3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
