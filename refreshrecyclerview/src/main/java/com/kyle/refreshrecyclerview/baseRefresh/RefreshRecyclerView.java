@@ -47,9 +47,9 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter,Req extend
         for (int i = 0; i < n; i++) {
             int attr = a.getIndex(i);
             if (attr == R.styleable.RefreshRecyclerView_divider_width_horizontal) {
-                binding.list.setDividerHorizontal(a.getDimension(attr, 1));
+                binding.list.setDividerHorizontal((int) a.getDimension(attr, 1));
             } else if (attr == R.styleable.RefreshRecyclerView_divider_height_vertical) {
-                binding.list.setDividerVertical(a.getDimension(attr, 1));
+                binding.list.setDividerVertical((int) a.getDimension(attr, 1));
             } else if (attr == R.styleable.RefreshRecyclerView_span_count) {
                 binding.list.setSpanCount(a.getInt(attr, 1));
             } else if (attr == R.styleable.RefreshRecyclerView_recycler_divider) {
