@@ -68,8 +68,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter,Req extend
         addView(view);
 
         binding.refreshLayout.setOnLoadMoreListener(refreshLayout -> {
-            if(resp==null)return;
-            if (req.getPage() >= resp.getTotalPages()) {
+            if (resp==null||req.getPage() >= resp.getTotalPages()) {
                 finishLoadMore();
                 return;
             }
@@ -85,7 +84,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter,Req extend
 
     public void reLoad() {
         req.setPage(1);
-        loadData();
+        request();
     }
 
     /***
@@ -112,6 +111,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter,Req extend
         if (!binding.refreshLayout.isRefreshing() && !binding.refreshLayout.isLoading()) {
             showLoading();
         }
+        loadData();
     }
 
     public void onSuccess(PagerResp resp) {
