@@ -25,14 +25,16 @@ import static com.kyle.baserecyclerview.LRecyclerView.VERTICAL;
  * Created by Kyle on 2018/9/19.
  */
 
-public abstract class RefreshRecyclerView<Adapter extends BaseAdapter,Req extends PagerReq> extends RelativeLayout {
+public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req extends PagerReq> extends RelativeLayout {
     protected LayoutRefreshRecyclerviewBinding binding;
 
 
     private Context mContext;
     private View emptyView;
+    private View errorView;
+    private View noNetView;
 
-    protected Adapter adapter;
+    public Adapter adapter;
 
     protected Req req;
     protected PagerResp resp;
@@ -68,7 +70,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter,Req extend
         addView(view);
 
         binding.refreshLayout.setOnLoadMoreListener(refreshLayout -> {
-            if (resp==null||req.getPage() >= resp.getTotalPages()) {
+            if (resp == null || req.getPage() >= resp.getTotalPages()) {
                 finishLoadMore();
                 return;
             }
@@ -115,7 +117,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter,Req extend
     }
 
     public void onSuccess(PagerResp resp) {
-        this.resp=resp;
+        this.resp = resp;
         onRequestEnd();
         finishLoadMore();
         finishRefresh();
@@ -140,10 +142,6 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter,Req extend
     }
 
 
-    public void showNoNet() {
-        binding.refreshMultipleStatusView.showNoNetwork();
-    }
-
     public void showContent() {
         binding.refreshMultipleStatusView.showContent();
     }
@@ -156,8 +154,22 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter,Req extend
         binding.refreshLayout.finishRefresh();
     }
 
+
+    public void showNoNet() {
+        if (noNetView != null) {
+            binding.refreshMultipleStatusView.showNoNetwork(noNetView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        } else {
+            binding.refreshMultipleStatusView.showNoNetwork();
+        }
+    }
+
+
     public void showError() {
-        binding.refreshMultipleStatusView.showError();
+        if (errorView != null) {
+            binding.refreshMultipleStatusView.showError(errorView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        } else {
+            binding.refreshMultipleStatusView.showError();
+        }
     }
 
     public void showEmpty() {
@@ -191,6 +203,10 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter,Req extend
 
     public void setEmptyView(View emptyView) {
         this.emptyView = emptyView;
+    }
+
+    public void setErrorView(View errorView) {
+        this.errorView = errorView;
     }
 
     public void setAdapter(BaseAdapter adapter) {
