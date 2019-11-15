@@ -201,12 +201,28 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
 
     }
 
+    public void setNoNetView(View noNetView) {
+        this.noNetView = noNetView;
+    }
+
     public void setEmptyView(View emptyView) {
         this.emptyView = emptyView;
     }
 
     public void setErrorView(View errorView) {
         this.errorView = errorView;
+    }
+
+    public View getEmptyView() {
+        return emptyView;
+    }
+
+    public View getErrorView() {
+        return errorView;
+    }
+
+    public View getNoNetView() {
+        return noNetView;
     }
 
     public void setAdapter(BaseAdapter adapter) {
