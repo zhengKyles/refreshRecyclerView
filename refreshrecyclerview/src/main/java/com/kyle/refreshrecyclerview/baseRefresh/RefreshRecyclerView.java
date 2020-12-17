@@ -30,9 +30,10 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
 
 
     private Context mContext;
-    private View emptyView;
-    private View errorView;
-    private View noNetView;
+    private int emptyViewId;
+    private int errorViewId;
+    private int noNetViewId;
+    private int loadingViewId;
 
     public Adapter adapter;
 
@@ -157,8 +158,8 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
 
 
     public void showNoNet() {
-        if (noNetView != null) {
-            binding.refreshMultipleStatusView.showNoNetwork(noNetView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        if (noNetViewId != 0) {
+            binding.refreshMultipleStatusView.showNoNetwork(noNetViewId, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         } else {
             binding.refreshMultipleStatusView.showNoNetwork();
         }
@@ -166,23 +167,23 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
 
 
     public void showError() {
-        if (errorView != null) {
-            binding.refreshMultipleStatusView.showError(errorView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        if (errorViewId != 0) {
+            binding.refreshMultipleStatusView.showError(errorViewId, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         } else {
             binding.refreshMultipleStatusView.showError();
         }
     }
 
     public void showEmpty() {
-        if (emptyView != null) {
-            binding.refreshMultipleStatusView.showEmpty(emptyView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        if (emptyViewId != 0) {
+            binding.refreshMultipleStatusView.showEmpty(emptyViewId, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         } else {
             binding.refreshMultipleStatusView.showEmpty();
         }
     }
 
     public void showLoading() {
-        binding.refreshMultipleStatusView.showLoading();
+        binding.refreshMultipleStatusView.showLoading(loadingViewId, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
 
@@ -202,28 +203,36 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
 
     }
 
-    public void setNoNetView(View noNetView) {
-        this.noNetView = noNetView;
+    public int getEmptyViewId() {
+        return emptyViewId;
     }
 
-    public void setEmptyView(View emptyView) {
-        this.emptyView = emptyView;
+    public void setEmptyViewId(int emptyViewId) {
+        this.emptyViewId = emptyViewId;
     }
 
-    public void setErrorView(View errorView) {
-        this.errorView = errorView;
+    public int getErrorViewId() {
+        return errorViewId;
     }
 
-    public View getEmptyView() {
-        return emptyView;
+    public void setErrorViewId(int errorViewId) {
+        this.errorViewId = errorViewId;
     }
 
-    public View getErrorView() {
-        return errorView;
+    public int getNoNetViewId() {
+        return noNetViewId;
     }
 
-    public View getNoNetView() {
-        return noNetView;
+    public void setNoNetViewId(int noNetViewId) {
+        this.noNetViewId = noNetViewId;
+    }
+
+    public int getLoadingViewId() {
+        return loadingViewId;
+    }
+
+    public void setLoadingViewId(int loadingViewId) {
+        this.loadingViewId = loadingViewId;
     }
 
     public void setAdapter(BaseAdapter adapter) {
