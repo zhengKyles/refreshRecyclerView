@@ -26,7 +26,7 @@ import static com.kyle.baserecyclerview.LRecyclerView.VERTICAL;
  */
 
 public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req extends PagerReq> extends RelativeLayout {
-    protected LayoutRefreshRecyclerviewBinding binding;
+    public LayoutRefreshRecyclerviewBinding binding;
 
 
     private Context mContext;
@@ -67,7 +67,8 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
         binding.list.setAdapter(adapter);
         binding.list.requestView();
         a.recycle();
-        addView(view);
+        RelativeLayout.LayoutParams params=new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        addView(view,params);
 
         binding.refreshLayout.setOnLoadMoreListener(refreshLayout -> {
             if (resp == null || req.getPage() >= resp.getTotalPages()) {

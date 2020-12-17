@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <com.classic.common.MultipleStatusView xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/refresh_multiple_status_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:emptyView="@layout/empty_view"
-        app:errorView="@layout/error_view"
-        app:loadingView="@layout/layout_loadding"
-        app:noNetworkView="@layout/no_network_view">
+        android:layout_height="match_parent">
 
         <com.kyle.refreshrecyclerview.baseRefresh.BaseSmartRefreshLayout
             android:id="@+id/refreshLayout"
@@ -18,11 +13,20 @@
             app:srlEnableLoadMore="true"
             app:srlEnablePreviewInEditMode="true">
 
-            <com.kyle.baserecyclerview.LRecyclerView
-                android:id="@+id/list"
+            <com.classic.common.MultipleStatusView
+                android:id="@+id/refresh_multiple_status_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                app:emptyView="@layout/empty_view"
+                app:errorView="@layout/error_view"
+                app:loadingView="@layout/layout_loadding"
+                app:noNetworkView="@layout/no_network_view">
 
+                <com.kyle.baserecyclerview.LRecyclerView
+                    android:id="@+id/list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </com.classic.common.MultipleStatusView>
         </com.kyle.refreshrecyclerview.baseRefresh.BaseSmartRefreshLayout>
-    </com.classic.common.MultipleStatusView>
+    </LinearLayout>
 </layout>
