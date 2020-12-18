@@ -40,6 +40,8 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
     protected Req req;
     protected PagerResp resp;
 
+    protected boolean needEmpty = true;
+
     public RefreshRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
@@ -68,8 +70,8 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
         binding.list.setAdapter(adapter);
         binding.list.requestView();
         a.recycle();
-        RelativeLayout.LayoutParams params=new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        addView(view,params);
+        RelativeLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        addView(view, params);
 
         binding.refreshLayout.setOnLoadMoreListener(refreshLayout -> {
             if (resp == null || req.getPage() >= resp.getTotalPages()) {
@@ -175,6 +177,10 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
     }
 
     public void showEmpty() {
+        if (!needEmpty) {
+            binding.refreshMultipleStatusView.showContent();
+            return;
+        }
         if (emptyViewId != 0) {
             binding.refreshMultipleStatusView.showEmpty(emptyViewId, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         } else {
