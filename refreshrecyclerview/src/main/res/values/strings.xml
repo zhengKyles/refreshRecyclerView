@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">RefreshRecyclerView</string>
+    <string name="no_data">暂无数据</string>
+    <string name="error">发生错误</string>
+    <string name="no_net">无网络</string>
 </resources>

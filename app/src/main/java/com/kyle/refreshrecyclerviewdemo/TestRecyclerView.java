@@ -18,7 +18,7 @@ import java.util.List;
  * date   : 12/17/20
  * 看了我的代码，感动了吗?
  */
-class TestRecyclerView extends RefreshRecyclerView<TestRecyclerView.TestAdapter, PagerReq<String>> {
+class TestRecyclerView extends RefreshRecyclerView<TestRecyclerView.TestAdapter,String, PagerReq<String>> {
 
     public TestRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -63,17 +63,13 @@ class TestRecyclerView extends RefreshRecyclerView<TestRecyclerView.TestAdapter,
                 return list;
             }
 
-            @Override
-            public int getPage() {
-                return 1;
-            }
 
             @Override
             public int getTotalPages() {
                 return 10;
             }
         };
-        onSuccess(resp);
+        onError();
     }
 
     public class TestAdapter extends BaseAdapter<String, ItemTestBinding> {

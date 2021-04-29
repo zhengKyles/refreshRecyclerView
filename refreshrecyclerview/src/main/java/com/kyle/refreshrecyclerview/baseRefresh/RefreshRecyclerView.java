@@ -1,11 +1,11 @@
 package com.kyle.refreshrecyclerview.baseRefresh;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -18,6 +18,8 @@ import com.kyle.refreshrecyclerview.util.NetUtils;
 
 import java.util.List;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.kyle.baserecyclerview.LRecyclerView.VERTICAL;
 
 
@@ -25,29 +27,21 @@ import static com.kyle.baserecyclerview.LRecyclerView.VERTICAL;
  * Created by Kyle on 2018/9/19.
  */
 
-public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req extends PagerReq> extends RelativeLayout {
-    public LayoutRefreshRecyclerviewBinding binding;
-
-
-    private Context mContext;
-    private int emptyViewId;
-    private int errorViewId;
-    private int noNetViewId;
-    private int loadingViewId;
-
-    public Adapter adapter;
-
-    protected Req req;
-    protected PagerResp resp;
-
-    protected boolean needEmpty = true;
+public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req extends PagerReq> extends RelativeLayout {
+    public Req req;
+    protected Context mContext;
+    protected Adapter adapter;
+    private RecyclerViewHandler recyclerViewHandler;
+    protected LayoutRefreshRecyclerviewBinding binding;
 
     public RefreshRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
         View view = View.inflate(context, R.layout.layout_refresh_recyclerview, null);
+        LayoutParams params = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        addView(view, params);
         binding = DataBindingUtil.bind(view);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RefreshRecyclerView);
+        @SuppressLint("CustomViewStyleable") TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RefreshRecyclerView);
         int n = a.getIndexCount();
         for (int i = 0; i < n; i++) {
             int attr = a.getIndex(i);
@@ -69,28 +63,51 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
         req = getReq();
         binding.list.setAdapter(adapter);
         binding.list.requestView();
-        a.recycle();
-        RelativeLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        addView(view, params);
 
         binding.refreshLayout.setOnLoadMoreListener(refreshLayout -> {
-            if (resp == null || req.getPage() >= resp.getTotalPages()) {
-                finishLoadMore();
-                return;
-            }
-            req.setPage(req.getPage() + 1);
-            loadData();
+            int page = req.getPage();
+            req.setPage(page + 1);
+            load();
         });
-        binding.refreshLayout.setOnRefreshListener(refreshLayout -> {
-            reLoad();
-        });
+        binding.refreshLayout.setOnRefreshListener(refreshLayout -> reLoad());
+        a.recycle();
     }
 
-    protected abstract Req getReq();
 
-    public void reLoad() {
-        req.setPage(1);
-        request();
+    public void finishLoadMore() {
+        binding.refreshLayout.finishLoadMore();
+    }
+
+    public void finishRefresh() {
+        binding.refreshLayout.finishRefresh();
+    }
+
+    public void showContent() {
+        binding.list.setVisibility(View.VISIBLE);
+        binding.viewStatus.setVisibility(View.GONE);
+    }
+
+
+    public void showNoNet() {
+        binding.list.setVisibility(View.GONE);
+        binding.viewStatus.setVisibility(View.VISIBLE);
+        inflate(mContext, getNoNetViewId(), binding.viewStatus);
+    }
+
+    public void showError() {
+        binding.list.setVisibility(View.GONE);
+        binding.viewStatus.setVisibility(View.VISIBLE);
+        inflate(mContext, getErrorViewId(), binding.viewStatus);
+    }
+
+    public void showEmpty() {
+        binding.list.setVisibility(View.GONE);
+        binding.viewStatus.setVisibility(View.VISIBLE);
+        inflate(mContext, getEmptyViewId(), binding.viewStatus);
+    }
+
+    public void showLoading() {
+        binding.refreshLayout.autoRefresh(0, 200, 1f);
     }
 
     /***
@@ -100,11 +117,23 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
         binding.refreshLayout.setEnableLoadMore(false);
     }
 
+    public void enableLoadMore() {
+        binding.refreshLayout.setEnableLoadMore(true);
+    }
+
     /***
      * 禁止下拉刷新
      */
     public void disableRefresh() {
         binding.refreshLayout.setEnableRefresh(false);
+    }
+
+    public void setNewData(List<Resp> d) {
+        adapter.setNewData(d);
+    }
+
+    public void addData(List<Resp> d) {
+        adapter.addData(d);
     }
 
     /***
@@ -113,19 +142,16 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
     public void request() {
         if (!NetUtils.isConnected(mContext)) {
             showNoNet();
+            onFinish();
+            return;
         }
         if (!binding.refreshLayout.isRefreshing() && !binding.refreshLayout.isLoading()) {
             showLoading();
         }
-        loadData();
     }
 
     public void onSuccess(PagerResp resp) {
-        this.resp = resp;
-        onRequestEnd();
-        finishLoadMore();
-        finishRefresh();
-        if (resp.getPage() == 1) {
+        if (req.getPage() == 1) {
             if (resp.getData().size() == 0) {
                 showEmpty();
                 return;
@@ -136,124 +162,75 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Req exten
             showContent();
             addData(resp.getData());
         }
+        onFinish();
     }
 
-    public void onError() {
-        onRequestEnd();
+    protected void onError() {
+        if (isFirstPage()) {
+            showError();
+        }
+        onFinish();
+    }
+
+
+    /***
+     * 请求结束 无论失败或者成功都会返回
+     */
+    public void onFinish() {
         finishLoadMore();
         finishRefresh();
-        showError();
-    }
-
-
-    public void showContent() {
-        binding.refreshMultipleStatusView.showContent();
-    }
-
-    public void finishLoadMore() {
-        binding.refreshLayout.finishLoadMore();
-    }
-
-    public void finishRefresh() {
-        binding.refreshLayout.finishRefresh();
-    }
-
-
-    public void showNoNet() {
-        if (noNetViewId != 0) {
-            binding.refreshMultipleStatusView.showNoNetwork(noNetViewId, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        } else {
-            binding.refreshMultipleStatusView.showNoNetwork();
+        if (recyclerViewHandler != null) {
+            recyclerViewHandler.onFinish();
         }
-    }
-
-
-    public void showError() {
-        if (errorViewId != 0) {
-            binding.refreshMultipleStatusView.showError(errorViewId, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        } else {
-            binding.refreshMultipleStatusView.showError();
-        }
-    }
-
-    public void showEmpty() {
-        if (!needEmpty) {
-            binding.refreshMultipleStatusView.showContent();
-            return;
-        }
-        if (emptyViewId != 0) {
-            binding.refreshMultipleStatusView.showEmpty(emptyViewId, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        } else {
-            binding.refreshMultipleStatusView.showEmpty();
-        }
-    }
-
-    public void showLoading() {
-        binding.refreshMultipleStatusView.showLoading(loadingViewId, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-    }
-
-
-    public void setNewData(List d) {
-        adapter.setNewData(d);
-    }
-
-    public void addData(List d) {
-        adapter.addData(d);
-    }
-
-    public abstract Adapter getAdapter();
-
-    public abstract void loadData();
-
-    public void onRequestEnd() {
-
-    }
-
-    public int getEmptyViewId() {
-        return emptyViewId;
-    }
-
-    public void setEmptyViewId(int emptyViewId) {
-        this.emptyViewId = emptyViewId;
-    }
-
-    public int getErrorViewId() {
-        return errorViewId;
-    }
-
-    public void setErrorViewId(int errorViewId) {
-        this.errorViewId = errorViewId;
-    }
-
-    public int getNoNetViewId() {
-        return noNetViewId;
-    }
-
-    public void setNoNetViewId(int noNetViewId) {
-        this.noNetViewId = noNetViewId;
-    }
-
-    public int getLoadingViewId() {
-        return loadingViewId;
-    }
-
-    public void setLoadingViewId(int loadingViewId) {
-        this.loadingViewId = loadingViewId;
-    }
-
-    public void setAdapter(BaseAdapter adapter) {
-        binding.list.setAdapter(adapter);
     }
 
     public void setOnItemClickListener(BaseQuickAdapter.OnItemClickListener onItemClickListener) {
         getAdapter().setOnItemClickListener(onItemClickListener);
     }
 
-    public void setDividerHorizontal(int dividerHorizontal) {
-        binding.list.setDividerHorizontal(dividerHorizontal);
+    protected abstract Adapter getAdapter();
+
+
+    protected abstract void loadData();
+
+    protected abstract Req getReq();
+
+    protected boolean isFirstPage() {
+        return 1 == req.getPage();
     }
 
-    public void requestView() {
-        binding.list.requestView();
+
+    public void reLoad() {
+        req.setPage(1);
+        load();
     }
+
+    private void load() {
+        if (!NetUtils.isConnected(mContext)) {
+            showNoNet();
+            return;
+        }
+        loadData();
+    }
+
+    public void setRecyclerViewHandler(RecyclerViewHandler handler) {
+        this.recyclerViewHandler = handler;
+    }
+
+    public interface RecyclerViewHandler {
+        void onFinish();
+    }
+
+    protected int getErrorViewId() {
+        return R.layout.layout_error;
+    }
+
+    protected int getEmptyViewId() {
+        return R.layout.layout_empty;
+    }
+
+    protected int getNoNetViewId() {
+        return R.layout.layout_no_net;
+    }
+
 }

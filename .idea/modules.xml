@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="refreshRecyclerView/app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/refreshRecyclerView.iml" filepath="$PROJECT_DIR$/.idea/modules/refreshRecyclerView.iml" group="refreshRecyclerView" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/refreshrecyclerview/refreshrecyclerview.iml" filepath="$PROJECT_DIR$/.idea/modules/refreshrecyclerview/refreshrecyclerview.iml" group="refreshRecyclerView/refreshrecyclerview" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/refreshRecyclerView.iml" filepath="$PROJECT_DIR$/.idea/modules/refreshRecyclerView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/refreshRecyclerView.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/refreshRecyclerView.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/refreshrecyclerview/refreshRecyclerView.refreshrecyclerview.iml" filepath="$PROJECT_DIR$/.idea/modules/refreshrecyclerview/refreshRecyclerView.refreshrecyclerview.iml" />
     </modules>
   </component>
 </project>

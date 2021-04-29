@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.kyle.refreshrecyclerview.baseRefresh.BaseSmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePreviewInEditMode="true"
+        app:srlReboundDuration="500">
 
-        <com.kyle.refreshrecyclerview.baseRefresh.BaseSmartRefreshLayout
-            android:id="@+id/refreshLayout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srlEnableLoadMore="true"
-            app:srlEnablePreviewInEditMode="true">
+            android:layout_height="match_parent">
 
-            <com.classic.common.MultipleStatusView
-                android:id="@+id/refresh_multiple_status_view"
+            <com.kyle.baserecyclerview.LRecyclerView
+                android:id="@+id/list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:emptyView="@layout/empty_view"
-                app:errorView="@layout/error_view"
-                app:loadingView="@layout/layout_loadding"
-                app:noNetworkView="@layout/no_network_view">
+                android:layout_height="match_parent" />
 
-                <com.kyle.baserecyclerview.LRecyclerView
-                    android:id="@+id/list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </com.classic.common.MultipleStatusView>
-        </com.kyle.refreshrecyclerview.baseRefresh.BaseSmartRefreshLayout>
-    </LinearLayout>
+            <FrameLayout
+                android:visibility="gone"
+                android:id="@+id/viewStatus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+    </com.kyle.refreshrecyclerview.baseRefresh.BaseSmartRefreshLayout>
+
 </layout>
