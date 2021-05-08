@@ -7,20 +7,13 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'com.novoda:bintray-release:+'
     }
 }
 
 allprojects {
     repositories {
-        maven{url 'https://dl.bintray.com/kyle/maven'}
+        maven { url "https://jitpack.io" }
         google()
         jcenter()
-        maven { url "https://jitpack.io" }
     }
 }
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-tasks.getByPath(":refreshrecyclerview:javadocRelease").enabled = false

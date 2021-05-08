@@ -1,13 +1,12 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 27
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.1.1"
     }
 
     buildTypes {
@@ -23,14 +22,7 @@ android {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
-    publish {
-        userOrg = 'kyle'      //bintray注册的用户名
-        groupId = 'com.kyle'         //compile引用时的第1部分groupId
-        artifactId = 'refreshRecyclerView'     //compile引用时的第2部分项目名
-        publishVersion = '1.1.2'    //compile引用时的第3部分版本号
-        desc = 'This is a refreshRecyclerView library '
-        website = 'https://github.com/zhengKyles/refreshRecyclerView'
-    }
+
 }
 
 dependencies {
@@ -39,12 +31,5 @@ dependencies {
     api "com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1"
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
-    api 'com.kyle:baseRecyclerView:1.0.4'
-
-}
-tasks.withType(Javadoc) {
-    options.addStringOption('Xdoclint:none', '-quiet')
-    options.addStringOption('encoding', 'UTF-8')
-    options.addStringOption('charSet', 'UTF-8')
-
+    api 'com.github.zhengKyles:baseRecyclerView:1.1.1'
 }

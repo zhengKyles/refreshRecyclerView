@@ -1,8 +1,6 @@
 package com.kyle.refreshrecyclerview.baseRefresh;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
@@ -19,8 +17,6 @@ import com.kyle.refreshrecyclerview.util.NetUtils;
 import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static com.kyle.baserecyclerview.LRecyclerView.VERTICAL;
 
 
 /**
@@ -41,24 +37,6 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
         LayoutParams params = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
         addView(view, params);
         binding = DataBindingUtil.bind(view);
-        @SuppressLint("CustomViewStyleable") TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RefreshRecyclerView);
-        int n = a.getIndexCount();
-        for (int i = 0; i < n; i++) {
-            int attr = a.getIndex(i);
-            if (attr == R.styleable.RefreshRecyclerView_divider_width_horizontal) {
-                binding.list.setDividerHorizontal((int) a.getDimension(attr, 1));
-            } else if (attr == R.styleable.RefreshRecyclerView_divider_height_vertical) {
-                binding.list.setDividerVertical((int) a.getDimension(attr, 1));
-            } else if (attr == R.styleable.RefreshRecyclerView_span_count) {
-                binding.list.setSpanCount(a.getInt(attr, 1));
-            } else if (attr == R.styleable.RefreshRecyclerView_recycler_divider) {
-                binding.list.setDivider(a.getDrawable(attr));
-            } else if (attr == R.styleable.RefreshRecyclerView_direction) {
-                binding.list.setOrientation(a.getInt(attr, VERTICAL));
-            } else if (attr == R.styleable.RefreshRecyclerView_lastEnable) {
-                binding.list.setLastEnable(a.getBoolean(attr, false));
-            }
-        }
         adapter = getAdapter();
         req = getReq();
         binding.list.setAdapter(adapter);
@@ -70,7 +48,6 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
             load();
         });
         binding.refreshLayout.setOnRefreshListener(refreshLayout -> reLoad());
-        a.recycle();
     }
 
 
