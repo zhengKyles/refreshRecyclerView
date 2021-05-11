@@ -14,6 +14,7 @@ import com.kyle.refreshrecyclerview.interfaces.PagerReq;
 import com.kyle.refreshrecyclerview.interfaces.PagerResp;
 import com.kyle.refreshrecyclerview.util.NetUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -130,6 +131,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
     public void onSuccess(PagerResp resp) {
         if (req.getPage() == 1) {
             if (resp.getData().size() == 0) {
+                setNewData(new ArrayList());
                 showEmpty();
                 onFinish();
                 return;
