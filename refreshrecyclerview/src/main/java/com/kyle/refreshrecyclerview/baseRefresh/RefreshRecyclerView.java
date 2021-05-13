@@ -128,20 +128,23 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
         }
     }
 
-    public void onSuccess(PagerResp resp) {
+    public void onSuccess(PagerResp<Resp> resp) {
+        List<Resp> data = resp.getData();
+        if (data == null || data.size() == 0) {
+            if (req.getPage() > 1) {
+                req.setPage(req.getPage() - 1);
+            }
+        }
         if (req.getPage() == 1) {
-            if (resp.getData().size() == 0) {
+            if (data.size() == 0) {
                 setNewData(new ArrayList());
                 showEmpty();
                 onFinish();
                 return;
             }
-            showContent();
-            setNewData(resp.getData());
-        } else {
-            showContent();
-            addData(resp.getData());
         }
+        showContent();
+        addData(data);
         onFinish();
     }
 
