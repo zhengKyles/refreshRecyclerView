@@ -64,6 +64,7 @@ class TestRecyclerView extends RefreshRecyclerView<TestRecyclerView.TestAdapter,
             }
 
 
+
             @Override
             public int getTotalPages() {
                 return 10;
