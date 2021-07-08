@@ -30,6 +30,8 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
     protected Adapter adapter;
     private RecyclerViewHandler recyclerViewHandler;
     protected LayoutRefreshRecyclerviewBinding binding;
+    //是否只展示内容，意为不展示空数据页面、无网络页面、错误页面
+    protected boolean onlyShowContent = false;
 
     public RefreshRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -67,18 +69,27 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
 
 
     public void showNoNet() {
+        if(onlyShowContent){
+            return;
+        }
         binding.list.setVisibility(View.GONE);
         binding.viewStatus.setVisibility(View.VISIBLE);
         inflate(mContext, getNoNetViewId(), binding.viewStatus);
     }
 
     public void showError() {
+        if(onlyShowContent){
+            return;
+        }
         binding.list.setVisibility(View.GONE);
         binding.viewStatus.setVisibility(View.VISIBLE);
         inflate(mContext, getErrorViewId(), binding.viewStatus);
     }
 
     public void showEmpty() {
+        if(onlyShowContent){
+            return;
+        }
         binding.list.setVisibility(View.GONE);
         binding.viewStatus.setVisibility(View.VISIBLE);
         inflate(mContext, getEmptyViewId(), binding.viewStatus);
