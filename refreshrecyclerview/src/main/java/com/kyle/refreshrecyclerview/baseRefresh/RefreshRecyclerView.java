@@ -147,17 +147,19 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
             }
         }
         if (req.getPage() == 1) {
+            setNewData(data);
             if (data.size() == 0) {
-                setNewData(new ArrayList());
                 showEmpty();
-                onFinish();
-                return;
+            } else {
+                showContent();
             }
+        } else {
+            showContent();
+            addData(data);
         }
-        showContent();
-        addData(data);
         onFinish();
     }
+
 
     protected void onError() {
         if (isFirstPage()) {
