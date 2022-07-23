@@ -1,12 +1,13 @@
 package com.kyle.refreshrecyclerview.baseRefresh;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.kyle.baserecyclerview.BaseAdapter;
 import com.kyle.refreshrecyclerview.R;
 import com.kyle.refreshrecyclerview.databinding.LayoutRefreshRecyclerviewBinding;
@@ -14,7 +15,6 @@ import com.kyle.refreshrecyclerview.interfaces.PagerReq;
 import com.kyle.refreshrecyclerview.interfaces.PagerResp;
 import com.kyle.refreshrecyclerview.util.NetUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -69,7 +69,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
 
 
     public void showNoNet() {
-        if(onlyShowContent){
+        if (onlyShowContent) {
             return;
         }
         binding.list.setVisibility(View.GONE);
@@ -78,7 +78,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
     }
 
     public void showError() {
-        if(onlyShowContent){
+        if (onlyShowContent) {
             return;
         }
         binding.list.setVisibility(View.GONE);
@@ -87,7 +87,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
     }
 
     public void showEmpty() {
-        if(onlyShowContent){
+        if (onlyShowContent) {
             return;
         }
         binding.list.setVisibility(View.GONE);
@@ -96,7 +96,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
     }
 
     public void showLoading() {
-        binding.refreshLayout.autoRefresh(0, 200, 1f);
+        binding.refreshLayout.autoRefresh(0, 200, 1f,false);
     }
 
     /***
@@ -145,6 +145,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
             if (req.getPage() > 1) {
                 req.setPage(req.getPage() - 1);
             }
+            return;
         }
         if (req.getPage() == 1) {
             setNewData(data);
@@ -180,7 +181,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
         }
     }
 
-    public void setOnItemClickListener(BaseQuickAdapter.OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         getAdapter().setOnItemClickListener(onItemClickListener);
     }
 

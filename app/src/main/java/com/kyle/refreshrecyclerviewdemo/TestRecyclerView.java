@@ -70,7 +70,7 @@ class TestRecyclerView extends RefreshRecyclerView<TestRecyclerView.TestAdapter,
                 return 10;
             }
         };
-        onError();
+        onSuccess(resp);
     }
 
     public class TestAdapter extends BaseAdapter<String, ItemTestBinding> {
