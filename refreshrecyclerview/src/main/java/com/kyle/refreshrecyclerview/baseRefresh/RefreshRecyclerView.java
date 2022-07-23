@@ -145,6 +145,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
             if (req.getPage() > 1) {
                 req.setPage(req.getPage() - 1);
             }
+            onFinish();
             return;
         }
         if (req.getPage() == 1) {
