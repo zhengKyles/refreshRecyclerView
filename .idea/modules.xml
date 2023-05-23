@@ -4,7 +4,13 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/refreshRecyclerView.iml" filepath="$PROJECT_DIR$/.idea/modules/refreshRecyclerView.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/refreshRecyclerView.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/refreshRecyclerView.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/refreshRecyclerView.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/refreshRecyclerView.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/refreshRecyclerView.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/refreshRecyclerView.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/refreshRecyclerView.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/refreshRecyclerView.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/refreshrecyclerview/refreshRecyclerView.refreshrecyclerview.iml" filepath="$PROJECT_DIR$/.idea/modules/refreshrecyclerview/refreshRecyclerView.refreshrecyclerview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/refreshrecyclerview/refreshRecyclerView.refreshrecyclerview.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/refreshrecyclerview/refreshRecyclerView.refreshrecyclerview.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/refreshrecyclerview/refreshRecyclerView.refreshrecyclerview.main.iml" filepath="$PROJECT_DIR$/.idea/modules/refreshrecyclerview/refreshRecyclerView.refreshrecyclerview.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/refreshrecyclerview/refreshRecyclerView.refreshrecyclerview.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/refreshrecyclerview/refreshRecyclerView.refreshrecyclerview.unitTest.iml" />
     </modules>
   </component>
 </project>

@@ -1,12 +1,14 @@
 package com.kyle.refreshrecyclerview.baseRefresh;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import androidx.databinding.DataBindingUtil;
+
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.kyle.baserecyclerview.BaseAdapter;
 import com.kyle.refreshrecyclerview.R;
@@ -16,8 +18,6 @@ import com.kyle.refreshrecyclerview.interfaces.PagerResp;
 import com.kyle.refreshrecyclerview.util.NetUtils;
 
 import java.util.List;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 
 /**
@@ -96,7 +96,7 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
     }
 
     public void showLoading() {
-        binding.refreshLayout.autoRefresh(0, 200, 1f,false);
+        binding.refreshLayout.autoRefresh(0, 200, 1f, false);
     }
 
     /***
@@ -142,22 +142,14 @@ public abstract class RefreshRecyclerView<Adapter extends BaseAdapter, Resp, Req
     public void onSuccess(PagerResp<Resp> resp) {
         List<Resp> data = resp.getData();
         if (data == null || data.size() == 0) {
-            if (req.getPage() > 1) {
-                req.setPage(req.getPage() - 1);
-            }
-            onFinish();
-            return;
-        }
-        if (req.getPage() == 1) {
-            setNewData(data);
-            if (data.size() == 0) {
+            if (req.getPage() == 1) {
                 showEmpty();
             } else {
-                showContent();
+                req.setPage(req.getPage() - 1);
             }
         } else {
+            setNewData(data);
             showContent();
-            addData(data);
         }
         onFinish();
     }
